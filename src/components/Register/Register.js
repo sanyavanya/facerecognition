@@ -31,7 +31,7 @@ class Register extends React.Component {
 		else if (this.state.password.length < 8) this.setState({error: 'short password'}); // HERE IT SHOULD ACTUALLY BE LONGER THAT 8 CHARACTERS, BUT FOR NOW IT'S 2 FOR CONVINIENCE
 		else if (this.state.name.length < 3) this.setState({error: 'short name'});
 		else {
-			fetch('https://limitless-badlands-68204.herokuapp.com/register', {
+			fetch(this.props.apiUrl + 'register', {
 				method: 'post',
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify({

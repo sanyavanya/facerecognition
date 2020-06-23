@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Navigation from './components/Navigation/Navigation';
-// import Logo from './components/Logo/Logo'; this bitch throws an error
+// import Logo from './components/Logo/Logo'; this throws an error
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -27,7 +27,11 @@ class App extends Component {
         joined: ''
       }
     }
+    //this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/";
+    this.apiUrl = "http://localhost:4000/";
   }
+
+
 
   loadUser = (data) => {
     this.setState({user: {
@@ -39,11 +43,9 @@ class App extends Component {
     }})
   }
 
-
   calculateFaceLocation = (data) => {  
     let boxesAggregator = [];
     let regionsLength = data.outputs[0].data.regions.length;
-
 
     for (let i = 0; i < regionsLength; i++) {
       const clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
@@ -60,8 +62,6 @@ class App extends Component {
 
     return boxesAggregator;    
   }
-
-
 
   displayFaceBoxes = (boxes) => {
     let aggregator = [];
@@ -84,7 +84,7 @@ class App extends Component {
   onButtonSubmit = (event) => {
     this.setState({boxes: []});
     this.setState({imageUrl: this.state.input});
-    fetch('https://limitless-badlands-68204.herokuapp.com/imageurl', {
+    fetch(this.apiUrl + "imageurl", {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -96,7 +96,7 @@ class App extends Component {
       if (response.outputs[0].data.regions == null) this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>]});
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
-        fetch('https://limitless-badlands-68204.herokuapp.com/rankup', {
+        fetch(this.apiUrl + "rankup", {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -112,19 +112,15 @@ class App extends Component {
             entries: data,
             joined: this.state.user.joined
           }})
-          //console.log(this.state.user)
         })
         .catch(console.log)
       }    
-
 
     })
     .catch(err => {
       this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>]})
     });
-    }
-
-
+  }
 
   onRouteChange = (route) =>  { 
     if (route === 'signin') {
@@ -132,7 +128,6 @@ class App extends Component {
     } else if (route === 'home') {
       this.setState({isSignedin: true})
     }
-
     this.setState({route: route});
     this.setState({boxes: [], imageUrl: ''});
   }
@@ -149,11 +144,10 @@ class App extends Component {
                         }
                       }
                   }} />
-
         <Navigation onRouteChange = {this.onRouteChange} isSignedin = {this.state.isSignedin} />
         { this.state.route === 'home'
           ? <div>
-              {//  <Logo /> this bitch here throws an error
+              {//  <Logo /> this  here throws an error
               }
                   <Rank user={this.state.user}/>
                   <ImageLinkForm
@@ -165,8 +159,8 @@ class App extends Component {
             </div>
           : (
               this.state.route === 'signin'
-                ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} signInErrorMessage={this.signInErrorMessage} />
-                : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
+                ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
+                : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} apiUrl={this.apiUrl}/>
             )         
         }   
       </div>

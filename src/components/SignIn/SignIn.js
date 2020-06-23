@@ -24,7 +24,7 @@ class SignIn extends React.Component {
 	}
 
 	onSubmitSignIn = () => {
-		fetch('https://limitless-badlands-68204.herokuapp.com/signin', {
+		fetch(this.props.apiUrl + 'signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
 			body: JSON.stringify({
@@ -36,9 +36,9 @@ class SignIn extends React.Component {
 		.then(data => {
 			if (data === 'error logging in') {
 				console.log('no user found');
-				this.setState({signInError: true});
+				this.setState({ signInError: true });
 			} else {
-					this.setState({signInError: false});
+					this.setState({ signInError: false });
 					this.props.loadUser(data);
 					this.props.onRouteChange('home');
 			}				
