@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class SignIn extends React.Component {
 	constructor(props) {
 		super();
@@ -67,11 +66,7 @@ class SignIn extends React.Component {
 				      </div>
 				    </fieldset>
 				    <div className="">
-				      <input 
-				      	onClick={this.onSubmitSignIn}
-				      	
-
-				      	className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in"/>
+				      <input onClick={this.onSubmitSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in" />
 				    </div>
 				    <div className="lh-copy mt3">
 				      <p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
@@ -81,7 +76,6 @@ class SignIn extends React.Component {
 			</article>		
 		);
 	}
-	
 }
 
 export default SignIn;

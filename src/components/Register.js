@@ -42,7 +42,6 @@ class Register extends React.Component {
 			})
 			.then(response => response.json())
 			.then(data => {
-				console.log(data);
 				if (data === 'All fields are required' || data === 'A profile with this email already exists' || data === 'There was a problem with our server') this.setState({ registerError: data });
 				else {
 					this.setState({ registerregisterError: '' });
@@ -51,9 +50,8 @@ class Register extends React.Component {
 				}
 			})
 			.catch(err => this.setState({ registerError: 'Couldn’t reach server' }));
-			};
-		}
-		
+		};
+	}		
 
 	render() {
 		return (
@@ -63,14 +61,6 @@ class Register extends React.Component {
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f2 fw6 ph0 mh0">Register</legend>
 				      { this.state.registerError !== '' ? <div style={{color: 'red'}}>{this.state.registerError}, try again:</div> : null }
-				      {
-					      // { (this.state.registerError === 'All ') ? <div style={{color: 'red'}}>Name should be at least 2 characters long, try again:</div> : null }
-					      // { (this.state.registerError === 'email already used') ? <div style={{color: 'red'}}>A user with this email already exists.</div> : null }
-					      // { (this.state.registerError === 'short password') ? <div style={{color: 'red'}}>Password should be at least 8 characters long, try again:</div> : null }
-					      // { (this.state.registerError === 'wrong email format') ? <div style={{color: 'red'}}>Wrong email format, try again:</div> : null }
-					      // { (this.state.registerError === 'short name') ? <div style={{color: 'red'}}>Name should be at least 2 characters long, try again:</div> : null }
-					      // { (this.state.registerError === 'database off') ? <div style={{color: 'red'}}>Sorry, we couldn‘t reach our database.<br />Please contact <a href="mailto:ivanov.unn@gmail.com">Support</a>.</div> : null }
-					    }
 				      <div className="mt3">
 				        <label className="db fw6 lh-copy f6" htmlFor="names">Name</label>
 				        <input onChange= {this.onNameChange} onKeyDown={this.onEnterPress} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>
@@ -85,10 +75,7 @@ class Register extends React.Component {
 				      </div>
 				    </fieldset>
 				    <div className="">
-				      <input 
-				      	onClick={this.onSubmitRegister}
-
-				      	className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Register"/>
+				      <input onClick={this.onSubmitRegister} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Register"/>
 				    </div>
 				  </div>
 				</main>

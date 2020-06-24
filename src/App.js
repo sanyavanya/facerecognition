@@ -1,14 +1,13 @@
-
 import React, { Component } from 'react';
 import './App.css';
-import Navigation from './components/Navigation/Navigation';
-// import Logo from './components/Logo/Logo'; this throws an error
-import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
-import Rank from './components/Rank/Rank';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Particles from 'react-particles-js';
-import SignIn from './components/SignIn/SignIn';
-import Register from './components/Register/Register';
+import FaceRecognition from './components/FaceRecognition';
+import ImageLinkForm from './components/ImageLinkForm';
+import Navigation from './components/Navigation';
+import Rank from './components/Rank';
+import Register from './components/Register';
+import SignIn from './components/SignIn';
+// import Logo from './components/Logo'; this throws an error
 
 class App extends Component {
   constructor() {
