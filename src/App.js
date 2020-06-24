@@ -16,7 +16,6 @@ class App extends Component {
       input: '',
       imageUrl: '',
       boxes: [],
-      boxesLoading: false,
       route: 'signin',
       isSignedin: false,
       user: {
@@ -79,7 +78,7 @@ class App extends Component {
   }
 
   onButtonSubmit = (event) => {
-    this.setState({ boxes: [], boxesLoading: true });
+    this.setState({ boxes: [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>] });
     this.setState({ imageUrl: this.state.input });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
@@ -90,8 +89,7 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      console.log(response);
-      if (response === "Invalid image link") this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>]});
+      if (response === "Invalid image link") this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt', textShadow: '0px 1px 3px black'}} key='fail'>Invalid link, try again.</div>]});
       else if (response.outputs[0].data.regions == null) this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>]});
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
@@ -114,10 +112,9 @@ class App extends Component {
         })
         .catch(console.log)
       } 
-      this.setState({ boxesLoading: false })
     })
     .catch(err => {
-      this.setState({ boxesLoading: false, boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
+      this.setState({ boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -154,7 +151,7 @@ class App extends Component {
                 onButtonSubmit={ this.onButtonSubmit }
                 onEnterPress={ this.onEnterPress }
               />
-              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } boxesLoading={ this.state.boxesLoading }/> 
+              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } /> 
             </div>
           : (
               this.state.route === 'signin'

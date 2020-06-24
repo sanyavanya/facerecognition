@@ -24,6 +24,10 @@
   animation: spinner 1000ms linear infinite;
 }
 
+.bigger {
+  height: 5em;
+}
+
 .spinnerWrap {
   height: 100%;
   display: flex;
@@ -37,8 +41,10 @@
 
 .onTop {
   z-index: 2;
-  opacity: 50%;
+  opacity: 80%;
   position: absolute;
   top: 0px;
   width: 100%;
+  filter: invert(90%);
+  margin-bottom: 0;
 }
