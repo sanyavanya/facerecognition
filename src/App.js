@@ -27,8 +27,8 @@ class App extends Component {
         joined: ''
       }
     }
-    this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/";
-    // this.apiUrl = "http://localhost:4000/";
+    // this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
+    this.apiUrl = "http://localhost:4000/"; //development
   }
 
   loadUser = (data) => {
@@ -72,7 +72,6 @@ class App extends Component {
 
   onInputChange = (event) => {
     this.setState({input: event.target.value}) 
-
   }
 
    onEnterPress = (e) => {
@@ -91,7 +90,9 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      if (response.outputs[0].data.regions == null) this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>]});
+      console.log(response);
+      if (response === "Invalid image link") this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>]});
+      else if (response.outputs[0].data.regions == null) this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>]});
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
         fetch(this.apiUrl + "rankup", {
@@ -112,11 +113,10 @@ class App extends Component {
           }})
         })
         .catch(console.log)
-      }    
-
+      } 
     })
     .catch(err => {
-      this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>]})
+      this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -147,19 +147,19 @@ class App extends Component {
           ? <div>
               {//  <Logo /> this  here throws an error
               }
-                  <Rank user={this.state.user}/>
-                  <ImageLinkForm
-                    onInputChange={this.onInputChange}
-                    onButtonSubmit={this.onButtonSubmit}
-                    onEnterPress={this.onEnterPress}
-                  />
-                  <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl}/> 
+              <Rank user={this.state.user}/>
+              <ImageLinkForm
+                onInputChange={this.onInputChange}
+                onButtonSubmit={this.onButtonSubmit}
+                onEnterPress={this.onEnterPress}
+              />
+              <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl}/> 
             </div>
           : (
               this.state.route === 'signin'
                 ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
                 : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} apiUrl={this.apiUrl}/>
-            )         
+            )
         }   
       </div>
     );

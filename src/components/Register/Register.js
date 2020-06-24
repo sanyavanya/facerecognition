@@ -1,7 +1,6 @@
 import React from 'react';
 import emailFormatChecker from 'email-format-checker';
 
-
 class Register extends React.Component {
 	constructor(props) {
 		super();
@@ -9,27 +8,28 @@ class Register extends React.Component {
 			name: '',
 			email: '',
 			password: '',
-			error: ''
+			registerError: ''
 		}
 	}
 
 	onNameChange = (event) => {
-		this.setState({name: event.target.value})
+		this.setState({ name: event.target.value })
 	}
 	onEmailChange = (event) => {
-		this.setState({email: event.target.value})
+		this.setState({ email: event.target.value })
 	}
 	onPasswordChange = (event) => {
-		this.setState({password: event.target.value})
+		this.setState({ password: event.target.value })
 	}
 	onEnterPress = (e) => {
 		if (e.key === 'Enter') this.onSubmitRegister();
 	}
 
 	onSubmitRegister = () => {
-		if (!emailFormatChecker({email: this.state.email, emailRepeat: this.state.email})) this.setState({error: 'wrong email format'});
-		else if (this.state.password.length < 8) this.setState({error: 'short password'}); // HERE IT SHOULD ACTUALLY BE LONGER THAT 8 CHARACTERS, BUT FOR NOW IT'S 2 FOR CONVINIENCE
-		else if (this.state.name.length < 3) this.setState({error: 'short name'});
+		if (!emailFormatChecker({email: this.state.email, emailRepeat: this.state.email})) this.setState({ registerError: 'Wrong email format' });
+		else if (this.state.email === '') this.setState({ registerError: 'Email is required' });
+		else if (this.state.password.length < 8) this.setState({ registerError: 'Password should be at least 8 characters long' });
+		else if (this.state.name.length < 2) this.setState({ registerError: 'Name should be at least 2 characters long' });
 		else {
 			fetch(this.props.apiUrl + 'register', {
 				method: 'post',
@@ -42,15 +42,15 @@ class Register extends React.Component {
 			})
 			.then(response => response.json())
 			.then(data => {
-				//console.log(data);
-				if (data === "unable to register") this.setState({error: 'database off'});
-				else if (data.constraint === "login_email_key") this.setState({error: 'email already used'});
+				console.log(data);
+				if (data === 'All fields are required' || data === 'A profile with this email already exists' || data === 'There was a problem with our server') this.setState({ registerError: data });
 				else {
+					this.setState({ registerregisterError: '' });
 					this.props.loadUser(data);
 					this.props.onRouteChange('home');
 				}
 			})
-			.catch(err => console.log('C A T C H:', err));
+			.catch(err => this.setState({ registerError: 'Couldn’t reach server' }));
 			};
 		}
 		
@@ -62,11 +62,15 @@ class Register extends React.Component {
 				  <div className="measure">
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f2 fw6 ph0 mh0">Register</legend>
-				      { (this.state.error === 'email already used') ? <div style={{color: 'red'}}>A user with this email already exists.</div> : null }
-				      { (this.state.error === 'short password') ? <div style={{color: 'red'}}>Password should be at least 8 characters long, try again:</div> : null }
-				      { (this.state.error === 'wrong email format') ? <div style={{color: 'red'}}>Wrong email format, try again:</div> : null }
-				      { (this.state.error === 'short name') ? <div style={{color: 'red'}}>Name should be at least 2 characters long, try again:</div> : null }
-				      { (this.state.error === 'database off') ? <div style={{color: 'red'}}>Sorry, we couldn‘t reach our database.<br />Please contact <a href="mailto:ivanov.unn@gmail.com">Support</a>.</div> : null }
+				      { this.state.registerError !== '' ? <div style={{color: 'red'}}>{this.state.registerError}, try again:</div> : null }
+				      {
+					      // { (this.state.registerError === 'All ') ? <div style={{color: 'red'}}>Name should be at least 2 characters long, try again:</div> : null }
+					      // { (this.state.registerError === 'email already used') ? <div style={{color: 'red'}}>A user with this email already exists.</div> : null }
+					      // { (this.state.registerError === 'short password') ? <div style={{color: 'red'}}>Password should be at least 8 characters long, try again:</div> : null }
+					      // { (this.state.registerError === 'wrong email format') ? <div style={{color: 'red'}}>Wrong email format, try again:</div> : null }
+					      // { (this.state.registerError === 'short name') ? <div style={{color: 'red'}}>Name should be at least 2 characters long, try again:</div> : null }
+					      // { (this.state.registerError === 'database off') ? <div style={{color: 'red'}}>Sorry, we couldn‘t reach our database.<br />Please contact <a href="mailto:ivanov.unn@gmail.com">Support</a>.</div> : null }
+					    }
 				      <div className="mt3">
 				        <label className="db fw6 lh-copy f6" htmlFor="names">Name</label>
 				        <input onChange= {this.onNameChange} onKeyDown={this.onEnterPress} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>
@@ -92,6 +96,5 @@ class Register extends React.Component {
 		);
 	}
 }
-
 
 export default Register;
