@@ -78,7 +78,7 @@ class App extends Component {
   }
 
   onButtonSubmit = (event) => {
-    this.setState({ boxes: [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>] });
+    this.setState({ boxes: [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>] }); // THIS IS ASYNC. THAT'S WHY THE SPINNER IS NOT DISPLAYED AFTER BUILD
     this.setState({ imageUrl: this.state.input });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
