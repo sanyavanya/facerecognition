@@ -1,5 +1,6 @@
 import React from 'react';
 import emailFormatChecker from 'email-format-checker';
+import './spinner.css';
 
 class Register extends React.Component {
 	constructor(props) {
@@ -8,7 +9,8 @@ class Register extends React.Component {
 			name: '',
 			email: '',
 			password: '',
-			registerError: ''
+			registerError: '',
+			registerLoading: false
 		}
 	}
 
@@ -31,6 +33,7 @@ class Register extends React.Component {
 		else if (this.state.password.length < 8) this.setState({ registerError: 'Password should be at least 8 characters long' });
 		else if (this.state.name.length < 2) this.setState({ registerError: 'Name should be at least 2 characters long' });
 		else {
+			this.setState({ registerLoading: true });	
 			fetch(this.props.apiUrl + 'register', {
 				method: 'post',
 				headers: {'Content-Type': 'application/json'},
@@ -48,8 +51,9 @@ class Register extends React.Component {
 					this.props.loadUser(data);
 					this.props.onRouteChange('home');
 				}
+				this.setState({ registerLoading: false });	
 			})
-			.catch(err => this.setState({ registerError: 'Couldn’t reach server' }));
+			.catch(err => this.setState({ registerError: 'Couldn’t reach server', registerLoading: false }));
 		};
 	}		
 
@@ -74,8 +78,8 @@ class Register extends React.Component {
 				        <input onChange= {this.onPasswordChange} onKeyDown={this.onEnterPress} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
 				      </div>
 				    </fieldset>
-				    <div className="">
-				      <input onClick={this.onSubmitRegister} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Register"/>
+				    <div className="buttonOrSpinner">
+				      { !this.state.registerLoading ? <input onClick={this.onSubmitRegister} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Register"/> : <div key='spinner' className='spinnerWrap'><img src={require('./spinner.png')} alt ="..." className='spinner'/></div> }
 				    </div>
 				  </div>
 				</main>

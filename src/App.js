@@ -16,6 +16,7 @@ class App extends Component {
       input: '',
       imageUrl: '',
       boxes: [],
+      boxesLoading: false,
       route: 'signin',
       isSignedin: false,
       user: {
@@ -78,8 +79,8 @@ class App extends Component {
   }
 
   onButtonSubmit = (event) => {
-    this.setState({boxes: []});
-    this.setState({imageUrl: this.state.input});
+    this.setState({ boxes: [], boxesLoading: true });
+    this.setState({ imageUrl: this.state.input });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -113,9 +114,10 @@ class App extends Component {
         })
         .catch(console.log)
       } 
+      this.setState({ boxesLoading: false })
     })
     .catch(err => {
-      this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'>Unknown server error, try again later.</div>]})
+      this.setState({ boxesLoading: false, boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -141,23 +143,23 @@ class App extends Component {
                         }
                       }
                   }} />
-        <Navigation onRouteChange = {this.onRouteChange} isSignedin = {this.state.isSignedin} />
+        <Navigation onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } />
         { this.state.route === 'home'
           ? <div>
               {//  <Logo /> this  here throws an error
               }
-              <Rank user={this.state.user}/>
+              <Rank user={ this.state.user }/>
               <ImageLinkForm
-                onInputChange={this.onInputChange}
-                onButtonSubmit={this.onButtonSubmit}
-                onEnterPress={this.onEnterPress}
+                onInputChange={ this.onInputChange }
+                onButtonSubmit={ this.onButtonSubmit }
+                onEnterPress={ this.onEnterPress }
               />
-              <FaceRecognition boxes={this.state.boxes} imageUrl={this.state.imageUrl}/> 
+              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } boxesLoading={ this.state.boxesLoading }/> 
             </div>
           : (
               this.state.route === 'signin'
-                ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
-                : <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} apiUrl={this.apiUrl}/>
+                ? <SignIn onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
+                : <Register onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } apiUrl={ this.apiUrl }/>
             )
         }   
       </div>

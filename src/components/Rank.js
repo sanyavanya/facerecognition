@@ -2,15 +2,17 @@ import React from 'react';
 
 const Rank = ({ user }) => {
 	return (
-		<div>
+		<div className ='mt4'>
 			<div className='white f3'>
-				{`${user.name}, your current rank is`}
+				{`${user.name}, you have processed`}
 			</div>
 			<div className='white f1'>
 				{user.entries}
 			</div>
-		</div>
-		
+			<div className='white f3 ma' style={{marginTop: '-0.3em'}}>
+				{`images`}
+			</div>
+		</div>		
 	);
 }
 

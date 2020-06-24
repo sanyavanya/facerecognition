@@ -1,4 +1,5 @@
 import React from 'react';
+import './spinner.css';
 
 class SignIn extends React.Component {
 	constructor(props) {
@@ -6,7 +7,8 @@ class SignIn extends React.Component {
 		this.state = {
 			signInEmail: '',
 			signInPassword: '',
-			signInError: ''
+			signInError: '',
+			signInLoading: false
 		}
 	}
 
@@ -26,6 +28,8 @@ class SignIn extends React.Component {
 			this.setState({ signInError: 'Both fields are required' });
 			return;
 		}
+		this.setState({ signInLoading: true });
+
 		fetch(this.props.apiUrl + 'signin', {
 			method: 'post',
 			headers: {'Content-Type': 'application/json'},
@@ -42,9 +46,10 @@ class SignIn extends React.Component {
 				this.setState({ signInError: '' });
 				this.props.loadUser(data);
 				this.props.onRouteChange('home');
-			}				
+			}		
+			this.setState({ signInLoading: false });		
 		})
-		.catch(err => this.setState({ signInError: 'Server is unavailable' }));
+		.catch(err => this.setState({ signInError: 'Server is unavailable', signInLoading: false }));		
 	}
 
 	render() {
@@ -65,8 +70,8 @@ class SignIn extends React.Component {
 				        <input onChange={this.onPasswordChange} onKeyDown={this.onEnterPress} className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="password" name="password"  id="password"/>
 				      </div>
 				    </fieldset>
-				    <div className="">
-				      <input onClick={this.onSubmitSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in" />
+				    <div className="buttonOrSpinner">
+				      { !this.state.signInLoading ? <input onClick={this.onSubmitSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in" /> : <div key='spinner' className='spinnerWrap'><img src={require('./spinner.png')} alt ="..." className='spinner'/></div> }
 				    </div>
 				    <div className="lh-copy mt3">
 				      <p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
