@@ -27,8 +27,8 @@ class App extends Component {
         joined: ''
       }
     }
-    // this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
-    this.apiUrl = "http://localhost:4000/"; //development
+    this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
+    // this.apiUrl = "http://localhost:4000/"; //development
   }
 
   loadUser = (data) => {
