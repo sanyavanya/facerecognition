@@ -33,8 +33,6 @@ class App extends Component {
     // this.apiUrl = "http://localhost:4000/"; //development
   }
 
-
-
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -130,7 +128,7 @@ class App extends Component {
 
   onRouteChange = (route) =>  { 
     if (route === 'signin') {
-      localStorage.setItem(this.localStorageStateKey, null);
+      localStorage.clear();
       this.setState({isSignedin: false})
     } else if (route === 'home') {
       this.setState({isSignedin: true})
@@ -140,24 +138,25 @@ class App extends Component {
   }
 
   componentDidMount() {
-    let locStor = JSON.parse(localStorage.getItem(this.localStorageStateKey));
-    if (locStor) {
-      this.setState({
-        input: '',
-        imageUrl: locStor.imageUrl,
-        imageIsBeingProcessed: false,
-        boxes: locStor.boxes,
-        route: 'home',
-        isSignedin: true,
-        user: {
-          id: locStor.user.id,
-          name: locStor.user.name,
-          email: locStor.user.email,
-          entries: locStor.user.entries,
-          joined: locStor.user.joined
-        }
-      });
-    }
+    // let data = localStorage.getItem(this.localStorageStateKey);
+    // if (data) {
+    //   let locStor = JSON.parse(data);
+    //   this.setState({
+    //     input: '',
+    //     imageUrl: locStor.imageUrl,
+    //     imageIsBeingProcessed: false,
+    //     boxes: locStor.boxes,
+    //     route: 'home',
+    //     isSignedin: true,
+    //     user: {
+    //       id: locStor.user.id,
+    //       name: locStor.user.name,
+    //       email: locStor.user.email,
+    //       entries: locStor.user.entries,
+    //       joined: locStor.user.joined
+    //     }
+    //   });
+    // }
   }
 
   render() {
