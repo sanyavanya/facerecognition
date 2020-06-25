@@ -41,7 +41,6 @@
 
 .onTop {
   z-index: 2;
-  opacity: 80%;
   position: absolute;
   top: 0px;
   width: 100%;

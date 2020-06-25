@@ -15,6 +15,7 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '',
+      imageIsBeingProcessed: false,
       boxes: [],
       route: 'signin',
       isSignedin: false,
@@ -26,9 +27,12 @@ class App extends Component {
         joined: ''
       }
     }
+    this.bigSpinner = [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>];
     this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
     // this.apiUrl = "http://localhost:4000/"; //development
   }
+
+
 
   loadUser = (data) => {
     this.setState({user: {
@@ -78,8 +82,7 @@ class App extends Component {
   }
 
   onButtonSubmit = (event) => {
-    this.setState({ boxes: [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>] }); // THIS IS ASYNC. THAT'S WHY THE SPINNER IS NOT DISPLAYED AFTER BUILD
-    this.setState({ imageUrl: this.state.input });
+    this.setState({ imageIsBeingProcessed: true, imageUrl: this.state.input, boxes: [] });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -89,8 +92,8 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      if (response === "Invalid image link") this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt', textShadow: '0px 1px 3px black'}} key='fail'>Invalid link, try again.</div>]});
-      else if (response.outputs[0].data.regions == null) this.setState({boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>]});
+      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: 'red', fontSize: '16pt', textShadow: '0px 1px 3px black'}} key='fail'>Invalid link, try again.</div>] });
+      else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>] });
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
         fetch(this.apiUrl + "rankup", {
@@ -102,19 +105,22 @@ class App extends Component {
         })
         .then(response => response.json())
         .then(data => {
-          this.setState({user: {
-            id: this.state.user.id,
-            name: this.state.user.name,
-            email: this.state.user.email,
-            entries: data,
-            joined: this.state.user.joined
-          }})
+          this.setState({
+            imageIsBeingProcessed: false,
+            user: {
+              id: this.state.user.id,
+              name: this.state.user.name,
+              email: this.state.user.email,
+              entries: data,
+              joined: this.state.user.joined
+            }
+          })
         })
-        .catch(console.log)
+        .catch(err => {console.log(err); this.setState({ imageIsBeingProcessed: false })})
       } 
     })
     .catch(err => {
-      this.setState({ boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
+      this.setState({ imageIsBeingProcessed:false, boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -151,7 +157,7 @@ class App extends Component {
                 onButtonSubmit={ this.onButtonSubmit }
                 onEnterPress={ this.onEnterPress }
               />
-              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } /> 
+              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } imageIsBeingProcessed = { this.state.imageIsBeingProcessed } bigSpinner = { this.bigSpinner } /> 
             </div>
           : (
               this.state.route === 'signin'
