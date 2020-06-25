@@ -16,15 +16,14 @@ const Navigation = ({ onRouteChange, isSignedin, route }) => {
 	if (isSignedin) {
 			return (
 				<nav style={{display: 'flex', justifyContent: 'flex-end', marginRight: '50px'}}>
-					<p onClick={() => onRouteChange('signin')} className='f3 link dim black underline pa3 pointer'>Sign Out</p>
+					<p onClick={() => onRouteChange('signin')} className={ defaultClassName + ' dim pointer underline' }>Sign Out</p>
 				</nav>
 			)
 	} else {
 		return (
 			<nav style={{display: 'flex', justifyContent: 'flex-end', marginRight: '50px'}}>
-				{ route === 'signin' ? console.log('signin!!!') : console.log('notsignin')}
-				<p onClick={() => onRouteChange('signin')} className={signInClassName}>Sign In</p>
-				<p onClick={() => onRouteChange('register')} className={registerClassName}> Register</p>
+				<p onClick={() => onRouteChange('signin')} className={ signInClassName }>Sign In</p>
+				<p onClick={() => onRouteChange('register')} className={ registerClassName }> Register</p>
 			</nav>
 		)
 	}

@@ -27,6 +27,7 @@ class App extends Component {
         joined: ''
       }
     }
+    this.localStorageStateKey = "state";
     this.bigSpinner = [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>];
     this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
     // this.apiUrl = "http://localhost:4000/"; //development
@@ -42,6 +43,7 @@ class App extends Component {
       entries: data.entries,
       joined: data.joined
     }})
+    localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state));
   }
 
   calculateFaceLocation = (data) => {  
@@ -77,11 +79,12 @@ class App extends Component {
     this.setState({input: event.target.value}) 
   }
 
-   onEnterPress = (e) => {
+  onEnterPress = (e) => {
     if (e.key === 'Enter') this.onButtonSubmit();
   }
 
   onButtonSubmit = (event) => {
+    if (this.state.input === '') return;
     this.setState({ imageIsBeingProcessed: true, imageUrl: this.state.input, boxes: [] });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
@@ -116,6 +119,7 @@ class App extends Component {
             }
           })
         })
+        .then(() => {localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state))})
         .catch(err => {console.log(err); this.setState({ imageIsBeingProcessed: false })})
       } 
     })
@@ -126,12 +130,34 @@ class App extends Component {
 
   onRouteChange = (route) =>  { 
     if (route === 'signin') {
+      localStorage.setItem(this.localStorageStateKey, null);
       this.setState({isSignedin: false})
     } else if (route === 'home') {
       this.setState({isSignedin: true})
     }
     this.setState({route: route});
     this.setState({boxes: [], imageUrl: ''});
+  }
+
+  componentDidMount() {
+    let locStor = JSON.parse(localStorage.getItem(this.localStorageStateKey));
+    if (locStor) {
+      this.setState({
+        input: '',
+        imageUrl: locStor.imageUrl,
+        imageIsBeingProcessed: false,
+        boxes: locStor.boxes,
+        route: 'home',
+        isSignedin: true,
+        user: {
+          id: locStor.user.id,
+          name: locStor.user.name,
+          email: locStor.user.email,
+          entries: locStor.user.entries,
+          joined: locStor.user.joined
+        }
+      });
+    }
   }
 
   render() {
