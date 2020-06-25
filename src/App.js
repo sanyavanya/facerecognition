@@ -146,7 +146,7 @@ class App extends Component {
                         }
                       }
                   }} />
-        <Navigation onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } />
+        <Navigation onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
         { this.state.route === 'home'
           ? <div>
               {//  <Logo /> this  here throws an error
