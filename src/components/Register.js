@@ -45,13 +45,13 @@ class Register extends React.Component {
 			})
 			.then(response => response.json())
 			.then(data => {
-				if (data === 'All fields are required' || data === 'A profile with this email already exists' || data === 'There was a problem with our server') this.setState({ registerError: data });
+				if (data === 'All fields are required' || data === 'A profile with this email already exists' || data === 'There was a problem with our server') this.setState({ registerLoading: false, registerError: data });
 				else {
 					this.setState({ registerregisterError: '' });
 					this.props.loadUser(data);
+					this.setState({ registerLoading: false });
 					this.props.onRouteChange('home');
-				}
-				this.setState({ registerLoading: false });	
+				}					
 			})
 			.catch(err => this.setState({ registerError: 'Couldn’t reach server', registerLoading: false }));
 		};

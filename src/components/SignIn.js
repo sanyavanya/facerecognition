@@ -41,13 +41,13 @@ class SignIn extends React.Component {
 		.then(response => response.json())
 		.then(data => {
 			if (data === 'Both fields are required' || data === 'Error logging in' || data === 'Wrong username or password') {
-				this.setState({ signInError: data });
+				this.setState({ signInError: data, signInLoading: false });
 			} else {
 				this.setState({ signInError: '' });
 				this.props.loadUser(data);
+				this.setState({ signInLoading: false });	
 				this.props.onRouteChange('home');
-			}		
-			this.setState({ signInLoading: false });		
+			}						
 		})
 		.catch(err => this.setState({ signInError: 'Server is unavailable', signInLoading: false }));		
 	}
