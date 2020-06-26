@@ -2,6 +2,16 @@
   text-align: center;
 }
 
+.navig {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2em;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .center {
   display: flex;
   justify-content: center;

@@ -15,13 +15,13 @@ const Navigation = ({ onRouteChange, isSignedin, route }) => {
 
 	if (isSignedin) {
 			return (
-				<nav style={{display: 'flex', justifyContent: 'flex-end', marginRight: '50px'}}>
+				<nav className='mr5' style={{display: 'flex', justifyContent: 'flex-end'}}>
 					<p onClick={() => onRouteChange('signin')} className={ defaultClassName + ' dim pointer underline' }>Sign Out</p>
 				</nav>
 			)
 	} else {
 		return (
-			<nav style={{display: 'flex', justifyContent: 'flex-end', marginRight: '50px'}}>
+			<nav className='mr5' style={{display: 'flex', justifyContent: 'flex-end'}}>
 				<p onClick={() => onRouteChange('signin')} className={ signInClassName }>Sign In</p>
 				<p onClick={() => onRouteChange('register')} className={ registerClassName }> Register</p>
 			</nav>

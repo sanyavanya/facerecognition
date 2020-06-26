@@ -173,10 +173,12 @@ class App extends Component {
                         }
                       }
                   }} />
-        <Navigation onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
+        <div className = 'navig'>
+          <Logo/>
+          <Navigation  onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
+        </div>
         { this.state.route === 'home'
           ? <div>
-              <Logo />
               <Rank user={ this.state.user }/>
               <ImageLinkForm
                 onInputChange={ this.onInputChange }
