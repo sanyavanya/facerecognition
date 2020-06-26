@@ -27,7 +27,7 @@ class App extends Component {
         joined: ''
       }
     }
-    this.localStorageStateKey = "state";
+    this.localStorageStateKey = "user";
     this.bigSpinner = [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>];
     this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
     // this.apiUrl = "http://localhost:4000/"; //development
@@ -41,7 +41,7 @@ class App extends Component {
       entries: data.entries,
       joined: data.joined
     }})
-    localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state));
+    localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state.user));
   }
 
   calculateFaceLocation = (data) => {  
@@ -117,7 +117,7 @@ class App extends Component {
             }
           })
         })
-        .then(() => {localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state))})
+        .then(() => {localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state.user))})
         .catch(err => {console.log(err); this.setState({ imageIsBeingProcessed: false })})
       } 
     })
@@ -138,25 +138,27 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // let data = localStorage.getItem(this.localStorageStateKey);
-    // if (data) {
-    //   let locStor = JSON.parse(data);
-    //   this.setState({
-    //     input: '',
-    //     imageUrl: locStor.imageUrl,
-    //     imageIsBeingProcessed: false,
-    //     boxes: locStor.boxes,
-    //     route: 'home',
-    //     isSignedin: true,
-    //     user: {
-    //       id: locStor.user.id,
-    //       name: locStor.user.name,
-    //       email: locStor.user.email,
-    //       entries: locStor.user.entries,
-    //       joined: locStor.user.joined
-    //     }
-    //   });
-    // }
+    let data = localStorage.getItem(this.localStorageStateKey);
+
+
+    if ((data !== null) && (typeof data !== 'undefined')) {
+      let locStor = JSON.parse(data);
+      this.setState({
+        input: '',
+        imageUrl: '',
+        imageIsBeingProcessed: false,
+        boxes: '',
+        route: 'home',
+        isSignedin: true,
+        user: {
+          id: locStor.id,
+          name: locStor.name,
+          email: locStor.email,
+          entries: locStor.entries,
+          joined: locStor.joined
+        }
+      });
+    }
   }
 
   render() {
