@@ -60,7 +60,7 @@ class SignIn extends React.Component {
 				  <div className="measure">
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f2 fw6 ph0 mh0">Sign In</legend>
-				      {this.state.signInError !== '' ? <div style={{color: 'red'}}>{ this.state.signInError }, try again:</div>: null }
+				      {this.state.signInError !== '' ? <div style={{color: '#A02C3D'}}>{ this.state.signInError }, try again:</div>: null }
 				      <div className="mt3">
 				        <label className="db fw6 lh-copy f6" htmlFor="email-address">E-mail</label>
 				        <input onChange={this.onEmailChange} onKeyDown={this.onEnterPress} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="email" name="email-address"  id="email-address"/>

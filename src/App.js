@@ -7,7 +7,7 @@ import Navigation from './components/Navigation';
 import Rank from './components/Rank';
 import Register from './components/Register';
 import SignIn from './components/SignIn';
-// import Logo from './components/Logo'; this throws an error
+import Logo from './components/Logo'; 
 
 class App extends Component {
   constructor() {
@@ -93,8 +93,8 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: 'red', fontSize: '16pt', textShadow: '0px 1px 3px black'}} key='fail'>Invalid link, try again.</div>] });
-      else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: 'red', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>] });
+      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>] });
+      else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>] });
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
         fetch(this.apiUrl + "rankup", {
@@ -122,7 +122,7 @@ class App extends Component {
       } 
     })
     .catch(err => {
-      this.setState({ imageIsBeingProcessed:false, boxes: [<div style={{color: 'red', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
+      this.setState({ imageIsBeingProcessed:false, boxes: [<div style={{color: '#C0354A', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -176,8 +176,7 @@ class App extends Component {
         <Navigation onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
         { this.state.route === 'home'
           ? <div>
-              {//  <Logo /> this  here throws an error
-              }
+              <Logo />
               <Rank user={ this.state.user }/>
               <ImageLinkForm
                 onInputChange={ this.onInputChange }

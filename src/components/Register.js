@@ -64,7 +64,7 @@ class Register extends React.Component {
 				  <div className="measure">
 				    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
 				      <legend className="f2 fw6 ph0 mh0">Register</legend>
-				      { this.state.registerError !== '' ? <div style={{color: 'red'}}>{this.state.registerError}, try again:</div> : null }
+				      { this.state.registerError !== '' ? <div style={{color: '#A02C3D'}}>{this.state.registerError}, try again:</div> : null }
 				      <div className="mt3">
 				        <label className="db fw6 lh-copy f6" htmlFor="names">Name</label>
 				        <input onChange= {this.onNameChange} onKeyDown={this.onEnterPress} className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" type="text" name="name"  id="name"/>

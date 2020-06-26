@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Navigation = ({ onRouteChange, isSignedin, route }) => {
-	let defaultClassName = 'f3 link black mr3';
+	let defaultClassName = 'f3 link black ml3';
 	let signInClassName = defaultClassName;
 	let registerClassName = defaultClassName;
 	if (route === 'signin') {
