@@ -19,17 +19,17 @@ class ImageLinkForm extends React.Component {
 						<div className='tabs center'>
 							<div className='tab pa1 br3 bl bt br br--top bw1 linkForm selectDisable pointer' style={this.props.tab !== 'link' ? {borderBottom: '2px solid black'} : {}}
 								onClick={() => {if (this.props.tab !== 'link') this.props.onTabChange('link')}} >
-								Paste URL
+								Paste a URL
 							</div>
 							<div className='tab pa1 br3 bl bt br br--top bw1 fileForm selectDisable pointer' style={this.props.tab !== 'file' ? {borderBottom: '2px solid black'} : {}} 
 								onClick={() => {if (this.props.tab !== 'file') this.props.onTabChange('file')}} >
-								Upload File
+								Upload a File
 							</div>
 						</div>
 						{this.props.tab === 'link' ?
 							<div className='center' >
 								<div className='pa3 br3 br--bottom bl br bb bw1 linkForm form'>
-									<input onKeyDown={this.props.onEnterPress} placeholder='Paste image link here' className='br3 f4 pa1 w-70' type='text' onChange={this.props.onInputChange}/>
+									<input onKeyDown={this.props.onEnterPress} placeholder='Paste image URL here' className='br3 f4 pa1 w-70' type='text' onChange={this.props.onInputChange}/>
 									<button
 										className={this.buttonClasses}
 										onClick={this.props.onButtonSubmit}>Detect</button>
@@ -38,7 +38,7 @@ class ImageLinkForm extends React.Component {
 							:
 							<div className='center' >
 		            <div className='pa3 br3 br--bottom bl br bb bw1 fileForm form'>
-		              <input type="file" onChange={this.props.onFileChange} />
+		              <input type="file" accept=".jpg, .jpeg, .png, .tiff, .bmp, .webp" onChange={this.props.onFileChange} />
 		              <button
 		                className={this.buttonClasses}
 		                onClick={this.props.onButtonSubmit}>Detect

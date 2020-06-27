@@ -1,13 +1,15 @@
 .linkForm {
-	background-color: #FFCF99;
+	background-color: rgba(91, 195, 222, 0.3);
 }
 
 .fileForm {
-	background-color: #FEFE71;
+	background-color: rgba(235, 107, 220, 0.3);
+  /*background-color: rgba(255, 255, 255, 0.3);*/
+
 }
 
 .submitButton {
-  background-color: #66A3A0;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .selectDisable {
@@ -39,6 +41,7 @@
 .form {
   width: 100%;
   display: inline;
+  height: 6.5em;
 }
 
 .bordered {

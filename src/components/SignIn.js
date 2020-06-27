@@ -52,6 +52,10 @@ class SignIn extends React.Component {
 		.catch(err => this.setState({ signInError: 'Server is unavailable', signInLoading: false }));		
 	}
 
+	testSignIn = (event) => {
+		this.setState({signInEmail: "user@example.com", signInPassword: "userexample"}, this.onSubmitSignIn)
+	}
+
 	render() {
 		const onRouteChange = this.props.onRouteChange;
 		return (
@@ -75,10 +79,11 @@ class SignIn extends React.Component {
 				    </div>
 				    <div className="lh-copy mt3">
 				      <p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
+				      <p className = "pointer f6 link dim black db" onClick = {this.testSignIn}>Test without registration</p>
 				    </div>
 				  </div>
 				</main>
-			</article>		
+			</article>
 		);
 	}
 }

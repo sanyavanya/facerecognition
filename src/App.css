@@ -66,3 +66,13 @@
   width: 500px;
   height: fit-content;
 }*/
+
+.spinnerSmall {
+  height: 0.8em;
+  -webkit-animation: spinner 1200ms linear infinite;
+  -moz-animation: spinner 1200ms linear infinite;
+  -ms-animation: spinner 1200ms linear infinite;
+  -o-animation: spinner 1200ms linear infinite;
+  animation: spinner 1200ms linear infinite;
+  filter: invert(100%);
+}
