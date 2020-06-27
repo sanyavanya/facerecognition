@@ -167,7 +167,7 @@ class App extends Component {
   }
 
   onTabChange = (tab) => {
-    this.setState({tab: tab, imageUrl: ''}, () => localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
+    this.setState({tab: tab, imageUrl: '', boxes: []}, () => localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
     
   }
 
