@@ -5,7 +5,7 @@ import mark from './mark.png'
 
 const Logo = () => {
 	return (
-		<div className='ml5' style={{ }} >
+		<div className='ml4' style={{ }} >
 			<Tilt className="Tilt br2 shadow-2" options={{ max: 40, reverse: true }} style={{ height: 80, width: 80 }} >
 			 <div className="Tilt-inner">
         <a href="https://github.com/sanyavanya" style={{color: 'white', fontSize: "smaller"}}>

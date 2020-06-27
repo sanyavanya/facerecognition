@@ -66,3 +66,13 @@
 /*  width: 500px;
   height: fit-content;*/
 }
+
+.tabs {
+  width: 90%;
+  max-width: 1400px;
+  display: flex;
+}
+
+.tab {
+  width: 50%;  
+}

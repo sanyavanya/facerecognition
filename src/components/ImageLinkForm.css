@@ -1,5 +1,5 @@
-.form {
-	background-color: rgba(233, 212, 185, 0.8);
+.linkForm {
+/*	background-color: rgba(233, 212, 185, 0.8);
 	background-image: repeating-linear-gradient(45deg, transparent 5px, hsla(197, 62%, 11%, 0.45) 5px, hsla(197, 62%, 11%, 0.45) 10px,
 	  hsla(5, 53%, 63%, 0) 10px, hsla(5, 53%, 63%, 0) 35px, hsla(5, 53%, 63%, 0.45) 35px, hsla(5, 53%, 63%, 0.45) 40px,
 	  hsla(197, 62%, 11%, 0.45) 40px, hsla(197, 62%, 11%, 0.45) 50px, hsla(197, 62%, 11%, 0) 50px, hsla(197, 62%, 11%, 0) 60px,
@@ -13,5 +13,18 @@
 	  hsla(5, 53%, 63%, 0.45) 60px, hsla(5, 53%, 63%, 0.45) 70px, hsla(35, 91%, 65%, 0.45) 70px, hsla(35, 91%, 65%, 0.45) 80px,
 	  hsla(35, 91%, 65%, 0) 80px, hsla(35, 91%, 65%, 0) 90px, hsla(5, 53%, 63%, 0.45) 90px, hsla(5, 53%, 63%, 0.45) 110px,
 	  hsla(5, 53%, 63%, 0) 110px, hsla(5, 53%, 63%, 0) 140px, hsla(197, 62%, 11%, 0.45) 140px, hsla(197, 62%, 11%, 0.45) 160px
-	);
+	);*/
+	background-color: cyan;
+}
+
+.fileForm {
+	background-color: yellow;
+}
+
+.selectDisable {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
