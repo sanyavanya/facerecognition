@@ -61,18 +61,8 @@
   z-index: -1;
 }
 
-.imageWrap {
-  /*border: 2px solid black;*/
-/*  width: 500px;
-  height: fit-content;*/
-}
-
-.tabs {
-  width: 90%;
-  max-width: 1400px;
-  display: flex;
-}
-
-.tab {
-  width: 50%;  
-}
+/*.imageWrap {
+  border: 2px solid black;
+  width: 500px;
+  height: fit-content;
+}*/

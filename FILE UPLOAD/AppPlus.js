@@ -19,7 +19,6 @@ class App extends Component {
       imageIsBeingProcessed: false,
       boxes: [],
       route: 'signin',
-      tab: 'file',
       isSignedin: false,
       user: {
         id: '',
@@ -46,6 +45,15 @@ class App extends Component {
     localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state.user));
   }
 
+  toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
   calculateFaceLocation = (data) => {  
     let boxesAggregator = [];
     let regionsLength = data.outputs[0].data.regions.length;
@@ -68,10 +76,11 @@ class App extends Component {
 
   displayFaceBoxes = (boxes) => {
     let aggregator = [];
-    for (let i=0; i<boxes.length; i++) {
+    for (let i = 0; i < boxes.length; i++) {
       let newDiv = [<div key ={i} className='bounding-box' style={{top: boxes[i].topRow, right: boxes[i].rightCol, bottom: boxes[i].bottomRow, left: boxes[i].leftCol}}>  </div>];
       aggregator = aggregator.concat(newDiv);
     }
+    console.log(aggregator)
     this.setState({boxes: aggregator});
   }
 
@@ -79,49 +88,40 @@ class App extends Component {
     this.setState({input: event.target.value}) 
   }
 
-  onEnterPress = (e) => {
-    if (e.key === 'Enter') this.onButtonSubmit();
-  }
-
-  toBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
   onFileChange = (event) => {
-    this.setState({file: event.target.files[0]}, () => {
-      this.toBase64(this.state.file)
-      .then(bytes => this.setState({imageUrl: bytes }));
+    this.setState({file: event.target.files[0]}) 
+    //console.log('filech')
+  }
+
+  onFileSubmit = (event) => {
+    if (this.state.file === null) return;
+    this.toBase64(this.state.file)
+    .then(bytes => {
+      this.setState({imageUrl: { base64: bytes.split("base64,")[1] }}, ()=>this.onButtonSubmit())
     })
   }
 
-  onButtonSubmit = (event) => {
-    let requestData = '';
-    if (this.state.tab === 'link') {
-      if (this.state.input === '') return;
-      requestData = this.state.input;
-      this.setState({ imageUrl: this.state.input });
-    }
-    if (this.state.tab === 'file') {
-      if (this.state.file === null) return;
-      requestData = { base64: this.state.imageUrl.split("base64,")[1] };        
-    }
+  onLinkSubmit = (event) => {    
+    if (this.state.input === '') return;
+    this.onButtonSubmit(this.state.input);
+  }
 
-    this.setState({ imageIsBeingProcessed: true, boxes: [] });
+  onEnterPress = (e) => {
+    if (e.key === 'Enter') this.onLinkSubmit();
+  }
+
+  onButtonSubmit = (event) => {
+    this.setState({ imageUrl: this.state.input });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        input: requestData
+        input: this.state.input
       })
     })
     .then(response => response.json())
     .then(response => {
-      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'>Invalid link, try again.</div>] });
+      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'>Invalid input, try again.</div>] });
       else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>] });
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
@@ -163,10 +163,6 @@ class App extends Component {
     }
     this.setState({route: route});
     this.setState({boxes: [], imageUrl: ''});
-  }
-
-  onTabChange = (tab) => {
-    this.setState({tab: tab, imageUrl: ''})
   }
 
   componentDidMount() {
@@ -212,11 +208,10 @@ class App extends Component {
               <Rank user={ this.state.user }/>
               <ImageLinkForm
                 onInputChange={ this.onInputChange }
-                onButtonSubmit={ this.onButtonSubmit }
+                onLinkSubmit={ this.onButtonSubmit }
                 onEnterPress={ this.onEnterPress }
-                tab={ this.state.tab }
-                onTabChange={ this.onTabChange }
                 onFileChange={ this.onFileChange }
+                onFileSubmit={ this.onFileSubmit }
               />
               <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } imageIsBeingProcessed = { this.state.imageIsBeingProcessed } bigSpinner = { this.bigSpinner } /> 
             </div>
