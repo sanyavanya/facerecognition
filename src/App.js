@@ -32,6 +32,7 @@ class App extends Component {
     this.localStorageStateKey = "state";
     this.bigSpinner = [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>];
     this.smallSpinner = [<div key='spinner'><img src={require('./components/spinner.png')} alt ="..." className='spinnerSmall'/></div>];
+    this.imageErrorStyle = {color: '#A02C3D', fontSize: '16pt', marginBottom: '2em'};
     this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
     // this.apiUrl = "http://localhost:4000/"; //development
   }
@@ -50,7 +51,6 @@ class App extends Component {
   calculateFaceLocation = (data) => {  
     let boxesAggregator = [];
     let regionsLength = data.outputs[0].data.regions.length;
-
     for (let i = 0; i < regionsLength; i++) {
       const clarifaiFace = data.outputs[0].data.regions[i].region_info.bounding_box;
       const image = document.getElementById('image');
@@ -63,7 +63,6 @@ class App extends Component {
         bottomRow: Math.floor(height - (clarifaiFace.bottom_row * height)) + 'px'
       })
     }
-
     return boxesAggregator;    
   }
 
@@ -94,7 +93,7 @@ class App extends Component {
   }
 
   onFileChange = (event) => {
-    this.setState({file: event.target.files[0]}, () => {
+    this.setState({ boxes: [], file: event.target.files[0]}, () => {
       this.toBase64(this.state.file)
       .then(bytes => this.setState({imageUrl: bytes }));
     })
@@ -111,7 +110,6 @@ class App extends Component {
       if (this.state.file === null) return;
       requestData = { base64: this.state.imageUrl.split("base64,")[1] };        
     }
-
     this.setState({ imageIsBeingProcessed: true, boxes: [] });
     fetch(this.apiUrl + "imageurl", {
       method: 'post',
@@ -122,8 +120,8 @@ class App extends Component {
     })
     .then(response => response.json())
     .then(response => {
-      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'>Invalid image, try again.</div>] });
-      else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={{color: '#A02C3D', fontSize: '16pt'}} key='fail'><br/>No faces found on submitted image, try again.</div>] });
+      if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={this.imageErrorStyle} key='fail'>Invalid image, try another.</div>] });
+      else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={this.imageErrorStyle} key='fail'><br/>No faces found on submitted image, try again.</div>] });
       else {
         this.displayFaceBoxes(this.calculateFaceLocation(response));
         fetch(this.apiUrl + "rankup", {
@@ -151,7 +149,7 @@ class App extends Component {
       } 
     })
     .catch(err => {
-      this.setState({ imageIsBeingProcessed:false, boxes: [<div style={{color: '#C0354A', fontSize: '16pt'} } key='fail'>Unknown server error, try again later.</div>]})
+      this.setState({ imageIsBeingProcessed:false, boxes: [<div style={this.imageErrorStyle} key='fail'>Unknown server error, try again later.</div>]})
     });
   }
 
@@ -165,10 +163,8 @@ class App extends Component {
     this.setState({route: route});
     this.setState({boxes: [], imageUrl: ''});
   }
-
   onTabChange = (tab) => {
-    this.setState({tab: tab, imageUrl: '', boxes: []}, () => localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
-    
+    this.setState( {tab: tab, imageUrl: '', boxes: [] }, () => localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
   }
 
   componentDidMount() {
@@ -176,46 +172,47 @@ class App extends Component {
     let data = localStorage.getItem(this.localStorageStateKey);
     if ((data !== null) && (typeof data !== 'undefined')) {
       let locStor = JSON.parse(data);
+      if ((locStor.user !== null) && (typeof locStor.user !== 'undefined')) {
+        this.setState({
+          input: '',
+          imageUrl: '',
+          imageIsBeingProcessed: false,
+          boxes: '',
+          tab: locStor.tab,
+          route: 'home',
+          isSignedin: true,
+          user: {
+            id: locStor.user.id,
+            name: locStor.user.name,
+            email: locStor.user.email,
+            entries: this.smallSpinner,
+            joined: locStor.user.joined
+          }
+        });
 
-      this.setState({
-        input: '',
-        imageUrl: '',
-        imageIsBeingProcessed: false,
-        boxes: '',
-        tab: locStor.tab,
-        route: 'home',
-        isSignedin: true,
-        user: {
-          id: locStor.user.id,
-          name: locStor.user.name,
-          email: locStor.user.email,
-          entries: this.smallSpinner,
-          joined: locStor.user.joined
-        }
-      });
-
-      fetch(this.apiUrl + 'profile/' + locStor.user.id, {
-        method: 'get',
-        headers: {'Content-Type': 'application/json'}
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data === 'Error getting user') {
-          console.log("Oops, couldn't get rank for a logged in user")
-        } else {
-          this.setState({
-            user: {
-              id: data.id,
-              name: data.name,
-              email: data.email,
-              entries: data.entries,
-              joined: data.joined
-            }
-          });
-        }             
-      })
-      //.then(localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
-      .catch(err => console.log(err)); 
+        fetch(this.apiUrl + 'profile/' + locStor.user.id, {
+          method: 'get',
+          headers: {'Content-Type': 'application/json'}
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data === 'Error getting user') {
+            console.log("Oops, couldn't get rank for a logged in user")
+          } else {
+            this.setState({
+              user: {
+                id: data.id,
+                name: data.name,
+                email: data.email,
+                entries: data.entries,
+                joined: data.joined
+              }
+            });
+          }             
+        })
+        //.then(localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
+        .catch(err => console.log(err)); 
+      }
     }
   }
 

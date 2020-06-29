@@ -5,7 +5,7 @@ class ImageLinkForm extends React.Component {
 	constructor(props) {
 		super();
 		this.tabClasses = 'tab pa1 br3 bl bt br br--top bw1 linkForm'
-		this.buttonClasses = 'br3 grow f4 link ph3 pv1 dib white ma2 submitButton';
+		this.buttonClasses = 'br3 grow f5 link ph3 pv1 dib white ma2 submitButton';
 	}
 
 	render(){
@@ -29,7 +29,7 @@ class ImageLinkForm extends React.Component {
 						{this.props.tab === 'link' ?
 							<div className='center' >
 								<div className='pa3 br3 br--bottom bl br bb bw1 linkForm form'>
-									<input onKeyDown={this.props.onEnterPress} placeholder='Paste image URL here' className='br3 f4 pa1 w-70' type='text' onChange={this.props.onInputChange}/>
+									<input onKeyDown={this.props.onEnterPress} placeholder='Paste image URL here' className='br3 f4 pa1 w-60 ma1 h2' type='text' onChange={this.props.onInputChange}/>
 									<button
 										className={this.buttonClasses}
 										onClick={this.props.onButtonSubmit}>Detect</button>
@@ -38,7 +38,7 @@ class ImageLinkForm extends React.Component {
 							:
 							<div className='center' >
 		            <div className='pa3 br3 br--bottom bl br bb bw1 fileForm form'>
-		              <input type="file" accept=".jpg, .jpeg, .png, .tiff, .bmp, .webp" onChange={this.props.onFileChange} />
+		              <input type="file" accept=".jpg, .jpeg, .png, .tiff, .bmp, .webp" className='br3 f5 w-60 h2' onChange={this.props.onFileChange} />
 		              <button
 		                className={this.buttonClasses}
 		                onClick={this.props.onButtonSubmit}>Detect

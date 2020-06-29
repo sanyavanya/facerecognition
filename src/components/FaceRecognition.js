@@ -11,7 +11,7 @@ class FaceRecognition extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.imageIsBeingProcessed !== prevProps.imageIsBeingProcessed) {
+    if (this.props !== prevProps) {
       if (this.props.imageIsBeingProcessed) this.setState({ boxesOrSpinner: this.props.bigSpinner })
       else this.setState({ boxesOrSpinner: this.props.boxes })
     }
@@ -20,8 +20,8 @@ class FaceRecognition extends React.Component {
   render() {
     return (
       <div className='center' style={{ marginTop: '50px', marginBottom: '50px' }}>
-        <div className='imageWrap absolute mt2'>
-          <img id='image' src={this.props.imageUrl} alt={``} style={{width: '500px', height: 'auto', marginBottom: '-4px'}} />
+        <div className='imageWrap absolute mt2 mb2'>
+          <img id='image' src={this.props.imageUrl} alt={``} style={{width: '500px', height: 'auto'}} />
           { this.state.boxesOrSpinner }
         </div>
       </div>    
