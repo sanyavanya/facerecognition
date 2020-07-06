@@ -50,7 +50,7 @@ class Register extends React.Component {
 					this.setState({ registerregisterError: '' });
 					this.props.loadUser(data);
 					this.setState({ registerLoading: false });
-					this.props.onRouteChange('home');
+					this.props.onRouteChange('detect');
 				}					
 			})
 			.catch(err => this.setState({ registerError: 'Couldn’t reach server', registerLoading: false }));

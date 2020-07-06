@@ -2,6 +2,20 @@
   text-align: center;
 }
 
+.activePage {
+  opacity: 0.3;
+}
+
+.navButton {
+    color: #551A8B;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.navButton:hover {
+  opacity: 0.3;
+}
+
 .navig {
   display: flex;
   justify-content: space-between;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
 import './App.css';
 import Particles from 'react-particles-js';
 import FaceRecognition from './components/FaceRecognition';
@@ -9,9 +10,11 @@ import Register from './components/Register';
 import SignIn from './components/SignIn';
 import Logo from './components/Logo'; 
 
+import FaceRecLoginManager from './components/LoginManager';
+
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       file: null,
       input: '',
@@ -26,7 +29,7 @@ class App extends Component {
         name: '',
         email: '',
         entries: 0,
-        joined: ''
+        joined: '' 
       }
     }
     this.localStorageStateKey = "state";
@@ -34,8 +37,11 @@ class App extends Component {
     this.smallSpinner = [<div key='spinner'><img src={require('./components/spinner.png')} alt ="..." className='spinnerSmall'/></div>];
     this.imageErrorStyle = {color: '#A02C3D', fontSize: '16pt', marginBottom: '2em'};
     this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
+    this.navStyle = 'f4 link black ml3 dim pointer underline';
+    this.currentNavStyle = 'f4 link black ml3 o30';
     // this.apiUrl = "http://localhost:4000/"; //development
   }
+
 
   loadUser = (data) => {
     this.setState({user: {
@@ -155,21 +161,42 @@ class App extends Component {
 
   onRouteChange = (route) =>  { 
     if (route === 'signin') {
+      FaceRecLoginManager.signOut();
       localStorage.clear();
-      this.setState({isSignedin: false})
-    } else if (route === 'home') {
-      this.setState({isSignedin: true})
+      // this.setState({isSignedin: false}, localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
+    } else if (route === 'detect') {
+      FaceRecLoginManager.signIn();
+      localStorage.setItem("FaceRecLoginManager", JSON.stringify(FaceRecLoginManager));
+      // this.setState({isSignedin: true}, localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
     }
-    this.setState({route: route});
+    // this.setState({route: route});
     this.setState({boxes: [], imageUrl: ''});
   }
   onTabChange = (tab) => {
     this.setState( {tab: tab, imageUrl: '', boxes: [] }, () => localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
   }
 
+  newSignin = (newIsSignedinValue) => {
+    this.setState({isSignedin: newIsSignedinValue}, localStorage.setItem(this.localStorageStateKey, JSON.stringify(this.state)))
+  }
+
   componentDidMount() {
+    // console.log(FaceRecLoginManager.isSignedin());
+    // FaceRecLoginManager.signIn();
+    // console.log(FaceRecLoginManager.isSignedin());
+
     // localStorage.clear();
+    let loginManagerData = localStorage.getItem("FaceRecLoginManager");
+    console.log('loginManagerData', loginManagerData);
+    if ((loginManagerData !== null) && (typeof loginManagerData !== 'undefined')) {
+      if (loginManagerData.signedIn) FaceRecLoginManager.signIn();
+      else FaceRecLoginManager.signIn();
+      localStorage.setItem("FaceRecLoginManager", JSON.stringify(FaceRecLoginManager));
+    }
+
+
     let data = localStorage.getItem(this.localStorageStateKey);
+    console.log('stateData', data);
     if ((data !== null) && (typeof data !== 'undefined')) {
       let locStor = JSON.parse(data);
       if ((locStor.user !== null) && (typeof locStor.user !== 'undefined')) {
@@ -179,7 +206,7 @@ class App extends Component {
           imageIsBeingProcessed: false,
           boxes: '',
           tab: locStor.tab,
-          route: 'home',
+          route: 'detect',
           isSignedin: true,
           user: {
             id: locStor.user.id,
@@ -216,44 +243,147 @@ class App extends Component {
     }
   }
 
+// FULLY WORKING RENDER WITHOUT ROUTER
+  // render() {
+  //   return (
+  //     <div className="App">
+  //       <Particles className='particles'
+  //                 params={{
+  //                     interactivity: {
+  //                       onhover: {
+  //                         enable: true,
+  //                         mode: 'repulse'
+  //                       }
+  //                     }
+  //                 }} />
+  //       <div className = 'navig'>
+  //         <Logo/>
+  //         <Navigation  onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
+  //       </div>
+  //       { this.state.route === 'home'
+  //         ? <div>
+  //             <Rank user={ this.state.user }/>
+  //             <ImageLinkForm
+  //               onInputChange={ this.onInputChange }
+  //               onButtonSubmit={ this.onButtonSubmit }
+  //               onEnterPress={ this.onEnterPress }
+  //               tab={ this.state.tab }
+  //               onTabChange={ this.onTabChange }
+  //               onFileChange={ this.onFileChange }
+  //             />
+  //             <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } imageIsBeingProcessed = { this.state.imageIsBeingProcessed } bigSpinner = { this.bigSpinner } /> 
+  //           </div>
+  //         : (
+  //             this.state.route === 'signin'
+  //               ? <SignIn onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
+  //               : <Register onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } apiUrl={ this.apiUrl }/>
+  //           )
+  //       }   
+  //     </div>
+  //   );
+  // }
+
+
+  // RENDER IN DEVELOPMENT, USES ROUTER
   render() {
     return (
-      <div className="App">
-        <Particles className='particles'
-                  params={{
-                      interactivity: {
-                        onhover: {
-                          enable: true,
-                          mode: 'repulse'
-                        }
-                      }
-                  }} />
-        <div className = 'navig'>
-          <Logo/>
-          <Navigation  onRouteChange = { this.onRouteChange } isSignedin = { this.state.isSignedin } route = { this.state.route } />
-        </div>
-        { this.state.route === 'home'
-          ? <div>
-              <Rank user={ this.state.user }/>
-              <ImageLinkForm
-                onInputChange={ this.onInputChange }
-                onButtonSubmit={ this.onButtonSubmit }
-                onEnterPress={ this.onEnterPress }
-                tab={ this.state.tab }
-                onTabChange={ this.onTabChange }
-                onFileChange={ this.onFileChange }
-              />
-              <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } imageIsBeingProcessed = { this.state.imageIsBeingProcessed } bigSpinner = { this.bigSpinner } /> 
-            </div>
-          : (
-              this.state.route === 'signin'
-                ? <SignIn onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
-                : <Register onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } apiUrl={ this.apiUrl }/>
-            )
-        }   
+      <div className='App'>
+      <Particles className='particles'
+        params={{
+            interactivity: {
+              onhover: {
+                enable: true,
+                mode: 'repulse'
+              }
+            }
+        }} />
+    <div className = 'navig'>
+      <Logo/>    
+        <nav className='mr4 ' style={{display: 'flex', justifyContent: 'flex-end'}}>
+          { !FaceRecLoginManager.isSignedin()
+            ? 
+              <div>
+                <NavLink to="/signin" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/signin")}>
+                  Sign In
+                </NavLink>
+                <NavLink to="/register" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/register")}>
+                  Register
+                </NavLink>
+              </div>
+            :
+              <div>
+                <NavLink to="/detect" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/detect")}>
+                    Detect
+                  </NavLink>
+                  <NavLink to="/gallery" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/gallery")}>
+                    Gallery
+                  </NavLink>
+                  <span className="" onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3">
+                    Sign Out
+                  </span>
+                </div>
+          }
+        </nav>
+      </div>
+
+        <Switch>
+          <Route exact path='/signin'>
+            { FaceRecLoginManager.isSignedin()
+              ?
+                <Redirect to='/detect' />
+              :
+                <div>
+                  <SignIn onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
+                </div>
+            }
+          </Route> 
+          <Route exact path='/register'>
+            { FaceRecLoginManager.isSignedin()
+              ?
+                <Redirect to='/detect' />
+              :
+                <div>
+                  <Register onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } apiUrl={ this.apiUrl }/>
+                </div>
+            } 
+          </Route>
+          <Route exact path='/detect'>
+            { !FaceRecLoginManager.isSignedin()
+              ?
+                <Redirect to='/signin' />
+              :
+                <div>
+                  <div>
+                  <Rank user={ this.state.user }/>
+                    <ImageLinkForm
+                      onInputChange={ this.onInputChange }
+                      onButtonSubmit={ this.onButtonSubmit }
+                      onEnterPress={ this.onEnterPress }
+                      tab={ this.state.tab }
+                      onTabChange={ this.onTabChange }
+                      onFileChange={ this.onFileChange }
+                    />
+                    <FaceRecognition boxes={ this.state.boxes } imageUrl={ this.state.imageUrl } imageIsBeingProcessed = { this.state.imageIsBeingProcessed } bigSpinner = { this.bigSpinner } /> 
+                  </div>
+                </div>
+            } 
+          </Route>  
+          <Route exact path='/gallery'>
+            { !FaceRecLoginManager.isSignedin()
+              ?
+                <Redirect to='/signin' />
+              :
+                <div>
+                  <div>GALLERY PAGE COMING SOON</div>
+                </div>
+            } 
+          </Route>
+        </Switch>        
       </div>
     );
   }
 }
+
+const isActive = (path, match, location) => !!(match || path === location.pathname);
 
 export default App;

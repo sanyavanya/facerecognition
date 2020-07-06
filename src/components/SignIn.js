@@ -1,5 +1,6 @@
 import React from 'react';
 import './spinner.css';
+import {NavLink} from 'react-router-dom';
 
 class SignIn extends React.Component {
 	constructor(props) {
@@ -46,7 +47,7 @@ class SignIn extends React.Component {
 				this.setState({ signInError: '' });
 				this.props.loadUser(data);
 				this.setState({ signInLoading: false });	
-				this.props.onRouteChange('home');
+				this.props.onRouteChange('detect');
 			}						
 		})
 		.catch(err => this.setState({ signInError: 'Server is unavailable', signInLoading: false }));		
@@ -57,7 +58,7 @@ class SignIn extends React.Component {
 	}
 
 	render() {
-		const onRouteChange = this.props.onRouteChange;
+		//const onRouteChange = this.props.onRouteChange;
 		return (
 			<article className="br2 ba dark-gray b--black-10 mv4 w-100 w-50-m w-25-1 mw5 center">
 				<main className="pa4 black-80">
@@ -78,7 +79,9 @@ class SignIn extends React.Component {
 				      { !this.state.signInLoading ? <input onClick={this.onSubmitSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in" /> : <div key='spinner' className='spinnerWrap'><img src={require('./spinner.png')} alt ="..." className='spinner'/></div> }
 				    </div>
 				    <div className="lh-copy mt3">
-				      <p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
+				    	<NavLink to="/register" className = "pointer f6 link dim black db">Register</NavLink>
+				      {//<p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
+				    }
 				      <p className = "pointer f6 link dim black db" onClick = {this.testSignIn}>Test without registration</p>
 				    </div>
 				  </div>
