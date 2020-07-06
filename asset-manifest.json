@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/facerecognition/static/css/main.d4db1043.chunk.css",
-    "main.js": "/facerecognition/static/js/main.7d069999.chunk.js",
+    "main.js": "/facerecognition/static/js/main.41c69e3d.chunk.js",
     "runtime-main.js": "/facerecognition/static/js/runtime-main.b29f0c47.js",
     "static/css/2.20355f55.chunk.css": "/facerecognition/static/css/2.20355f55.chunk.css",
     "static/js/2.34191161.chunk.js": "/facerecognition/static/js/2.34191161.chunk.js",
     "index.html": "/facerecognition/index.html",
-    "precache-manifest.c36a04fb3083cb7651ac59825649de4c.js": "/facerecognition/precache-manifest.c36a04fb3083cb7651ac59825649de4c.js",
+    "precache-manifest.206f7decf7bc094a3ccef7ce758a56c4.js": "/facerecognition/precache-manifest.206f7decf7bc094a3ccef7ce758a56c4.js",
     "service-worker.js": "/facerecognition/service-worker.js",
     "static/js/2.34191161.chunk.js.LICENSE.txt": "/facerecognition/static/js/2.34191161.chunk.js.LICENSE.txt",
     "static/media/spinner.png": "/facerecognition/static/media/spinner.15268e97.png"
@@ -16,6 +16,6 @@
     "static/css/2.20355f55.chunk.css",
     "static/js/2.34191161.chunk.js",
     "static/css/main.d4db1043.chunk.css",
-    "static/js/main.7d069999.chunk.js"
+    "static/js/main.41c69e3d.chunk.js"
   ]
 }
