@@ -79,7 +79,7 @@ class SignIn extends React.Component {
 				      { !this.state.signInLoading ? <input onClick={this.onSubmitSignIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"  type="submit" value="Sign in" /> : <div key='spinner' className='spinnerWrap'><img src={require('./spinner.png')} alt ="..." className='spinner'/></div> }
 				    </div>
 				    <div className="lh-copy mt3">
-				    	<NavLink to="/register" className = "pointer f6 link dim black db">Register</NavLink>
+				    	<NavLink to="/facerecognition/register" className = "pointer f6 link dim black db">Register</NavLink>
 				      {//<p onClick = {() => onRouteChange('register')} className = "pointer f6 link dim black db">Register</p>
 				    }
 				      <p className = "pointer f6 link dim black db" onClick = {this.testSignIn}>Test without registration</p>
