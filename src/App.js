@@ -303,19 +303,19 @@ class App extends Component {
           { !FaceRecLoginManager.isSignedin()
             ? 
               <div>
-                <NavLink to="/signin" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/signin")}>
+                <NavLink to="/facerecognition/signin" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/signin")}>
                   Sign In
                 </NavLink>
-                <NavLink to="/register" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/register")}>
+                <NavLink to="/facerecognition/register" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/register")}>
                   Register
                 </NavLink>
               </div>
             :
               <div>
-                <NavLink to="/detect" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/detect")}>
+                <NavLink to="/facerecognition/detect" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/detect")}>
                     Detect
                   </NavLink>
-                  <NavLink to="/gallery" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/gallery")}>
+                  <NavLink to="/facerecognition/gallery" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/gallery")}>
                     Gallery
                   </NavLink>
                   <span className="" onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3">
@@ -327,30 +327,33 @@ class App extends Component {
       </div>
 
         <Switch>
-          <Route exact path='/signin'>
+          <Route exact path='/facerecognition'>
+            <Redirect to='/facerecognition/signin' />
+          </Route>
+          <Route exact path='/facerecognition/signin'>
             { FaceRecLoginManager.isSignedin()
               ?
-                <Redirect to='/detect' />
+                <Redirect to='/facerecognition/detect' />
               :
                 <div>
                   <SignIn onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } signInErrorMessage={this.signInErrorMessage} apiUrl={this.apiUrl}/>
                 </div>
             }
           </Route> 
-          <Route exact path='/register'>
+          <Route exact path='/facerecognition/register'>
             { FaceRecLoginManager.isSignedin()
               ?
-                <Redirect to='/detect' />
+                <Redirect to='/facerecognition/detect' />
               :
                 <div>
                   <Register onRouteChange={ this.onRouteChange } loadUser={ this.loadUser } apiUrl={ this.apiUrl }/>
                 </div>
             } 
           </Route>
-          <Route exact path='/detect'>
+          <Route exact path='/facerecognition/detect'>
             { !FaceRecLoginManager.isSignedin()
               ?
-                <Redirect to='/signin' />
+                <Redirect to='/facerecognition/signin' />
               :
                 <div>
                   <div>
@@ -368,10 +371,10 @@ class App extends Component {
                 </div>
             } 
           </Route>  
-          <Route exact path='/gallery'>
+          <Route exact path='/facerecognition/gallery'>
             { !FaceRecLoginManager.isSignedin()
               ?
-                <Redirect to='/signin' />
+                <Redirect to='/facerecognition/signin' />
               :
                 <div>
                   <div>GALLERY PAGE COMING SOON</div>
