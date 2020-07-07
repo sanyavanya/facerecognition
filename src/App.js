@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, NavLink, Redirect } from 'react-router-dom';
+import { Switch, Route, Link, NavLink, Redirect } from 'react-router-dom';
 import './App.css';
 import Particles from 'react-particles-js';
 import FaceRecognition from './components/FaceRecognition';
@@ -99,10 +99,16 @@ class App extends Component {
   }
 
   onFileChange = (event) => {
-    this.setState({ boxes: [], file: event.target.files[0]}, () => {
-      this.toBase64(this.state.file)
-      .then(bytes => this.setState({imageUrl: bytes }));
-    })
+    if (event.target.files[0].size > 10000000) {
+      this.setState({ boxes: [<div style={this.imageErrorStyle} key='fail'>File size should be under 10 Mb, try another image.</div>] });
+      event.target.value = null;
+    } else {
+      this.setState({ boxes: [], file: event.target.files[0]}, () => {
+        // console.log(this.state.file)
+        this.toBase64(this.state.file)
+        .then(bytes => this.setState({imageUrl: bytes }));
+      })
+    }
   }
 
   onButtonSubmit = (event) => {
@@ -187,7 +193,7 @@ class App extends Component {
 
     // localStorage.clear();
     let loginManagerData = localStorage.getItem("FaceRecLoginManager");
-    console.log('loginManagerData', loginManagerData);
+    // console.log('loginManagerData', loginManagerData);
     if ((loginManagerData !== null) && (typeof loginManagerData !== 'undefined')) {
       if (loginManagerData.signedIn) FaceRecLoginManager.signIn();
       else FaceRecLoginManager.signIn();
@@ -196,7 +202,7 @@ class App extends Component {
 
 
     let data = localStorage.getItem(this.localStorageStateKey);
-    console.log('stateData', data);
+    // console.log('stateData', data);
     if ((data !== null) && (typeof data !== 'undefined')) {
       let locStor = JSON.parse(data);
       if ((locStor.user !== null) && (typeof locStor.user !== 'undefined')) {
@@ -380,6 +386,9 @@ class App extends Component {
                   <div>GALLERY PAGE COMING SOON</div>
                 </div>
             } 
+          </Route>
+          <Route path='*'>            
+                  <div>The page doesn't seem to exist.<br/>Why don't you <Link to='/facerecognition/detect' className="navButton">go home</Link>?</div>
           </Route>
         </Switch>        
       </div>
