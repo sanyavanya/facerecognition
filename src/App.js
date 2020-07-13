@@ -4,10 +4,10 @@ import './App.css';
 import Particles from 'react-particles-js';
 import FaceRecognition from './components/FaceRecognition';
 import ImageLinkForm from './components/ImageLinkForm';
-import Navigation from './components/Navigation';
 import Rank from './components/Rank';
 import Register from './components/Register';
 import SignIn from './components/SignIn';
+import Gallery from './components/Gallery'; 
 import Logo from './components/Logo'; 
 
 import FaceRecLoginManager from './components/LoginManager';
@@ -36,10 +36,11 @@ class App extends Component {
     this.bigSpinner = [<div key='spinner' className='spinnerWrap onTop'><img src={require('./components/spinner.png')} alt ="..." className='spinner bigger'/></div>];
     this.smallSpinner = [<div key='spinner'><img src={require('./components/spinner.png')} alt ="..." className='spinnerSmall'/></div>];
     this.imageErrorStyle = {color: '#A02C3D', fontSize: '16pt', marginBottom: '2em'};
-    this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
+    
     this.navStyle = 'f4 link black ml3 dim pointer underline';
     this.currentNavStyle = 'f4 link black ml3 o30';
     // this.apiUrl = "http://localhost:4000/"; //development
+    this.apiUrl = "https://limitless-badlands-68204.herokuapp.com/"; //production
   }
 
 
@@ -111,6 +112,20 @@ class App extends Component {
     }
   }
 
+  addImageToGallery = () => {
+    //console.log("IMAGEURL", this.state.imageUrl)
+    fetch(this.apiUrl + "addimage", {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ownerid: this.state.user.id,
+        image: this.state.imageUrl
+      })
+    })
+    .then(response => response.json())
+    .then(response => console.log('response from server image:', response))
+  }
+
   onButtonSubmit = (event) => {
     let requestData = '';
     if (this.state.tab === 'link') {
@@ -135,6 +150,7 @@ class App extends Component {
       if (response === "Invalid image link") this.setState({ imageIsBeingProcessed: false, boxes: [<div style={this.imageErrorStyle} key='fail'>Invalid image, try another.</div>] });
       else if (response.outputs[0].data.regions == null) this.setState({ imageIsBeingProcessed: false, boxes: [<div style={this.imageErrorStyle} key='fail'><br/>No faces found on submitted image, try again.</div>] });
       else {
+        this.addImageToGallery();
         this.displayFaceBoxes(this.calculateFaceLocation(response));
         fetch(this.apiUrl + "rankup", {
           method: 'put',
@@ -324,7 +340,7 @@ class App extends Component {
                   <NavLink to="/facerecognition/gallery" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/gallery")}>
                     Gallery
                   </NavLink>
-                  <span className="" onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3">
+                  <span onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3">
                     Sign Out
                   </span>
                 </div>
@@ -383,7 +399,7 @@ class App extends Component {
                 <Redirect to='/facerecognition/signin' />
               :
                 <div>
-                  <div>GALLERY PAGE COMING SOON</div>
+                  <Gallery ownerid={ this.state.user.id } apiUrl={ this.apiUrl } user={ this.state.user }/>
                 </div>
             } 
           </Route>

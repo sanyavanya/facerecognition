@@ -1,0 +1,17 @@
+.galleryItem {
+  max-height: 16em;
+  margin: 1em;
+}
+
+.gallery {
+  max-width: 1400px;
+  width: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.galleryWrap {
+  display: flex;
+  justify-content: center;
+}
