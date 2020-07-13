@@ -313,27 +313,27 @@ class App extends Component {
         }} />
     <div className = 'navig'>
       <Logo/>    
-        <nav className='mr4 ' style={{display: 'flex', justifyContent: 'flex-end'}}>
+        <nav className='mr4' style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end'}}>
           { !FaceRecLoginManager.isSignedin()
             ? 
-              <div>
-                <NavLink to="/facerecognition/signin" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/signin")}>
+              <div className='flxwrp'>
+                <NavLink to="/facerecognition/signin" className="navButton f4 ml3 mb2" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/signin")}>
                   Sign In
                 </NavLink>
-                <NavLink to="/facerecognition/register" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/register")}>
+                <NavLink to="/facerecognition/register" className="navButton f4 ml3 mb2" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/register")}>
                   Register
                 </NavLink>
               </div>
             :
-              <div>
-                <NavLink to="/facerecognition/detect" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/detect")}>
+              <div className='flxwrp'>
+                <NavLink to="/facerecognition/detect" className="navButton f4 ml3 mb2" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/detect")}>
                     Detect
                   </NavLink>
-                  <NavLink to="/facerecognition/gallery" className="navButton f4 ml3" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/gallery")}>
+                  <NavLink to="/facerecognition/gallery" className="navButton f4 ml3 mb2" activeClassName="activePage" isActive={isActive.bind(this, "/facerecognition/gallery")}>
                     Gallery
                   </NavLink>
-                  <span onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3">
-                    Sign Out
+                  <span onClick={()=>this.onRouteChange('signin')} className="navButton f4 ml3 mb2">
+                    Sign Out
                   </span>
                 </div>
           }

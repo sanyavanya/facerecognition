@@ -1,11 +1,11 @@
 .galleryItem {
-  max-height: 16em;
+  max-height: 20em;
+  max-width: 90%;
   margin: 1em;
 }
 
 .gallery {
   max-width: 1400px;
-  width: 95%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

@@ -15,7 +15,7 @@ class Gallery extends React.Component {
   }
 
   componentDidMount () {
-    console.log(this.state.galleryLoading)
+    //console.log(this.state.galleryLoading)
     fetch(this.props.apiUrl + "gallery", {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
@@ -28,14 +28,14 @@ class Gallery extends React.Component {
       if (response === "Gallery is empty") this.setState( { pictures: [<div>The images you <NavLink to="/facerecognition/detect" className = "dim">process</NavLink> will be stored here.</div>] })
       else {
         let aggregator = [];
-        for (let i=0; i<response.length; i++) {
+        for (let i = response.length-1; i >= 0; i--) {
           let newDiv = [<div key ={i} className=''><img src={response[i].image} alt ="..." className='galleryItem'/></div>];
           aggregator = aggregator.concat(newDiv);
         }
         this.setState({pictures: aggregator});
       }
     })
-    .then(this.setState({ galleryLoading: false }))
+    //.then(this.setState({ galleryLoading: false }))
   }
 
   render() {
