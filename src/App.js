@@ -203,22 +203,15 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log(FaceRecLoginManager.isSignedin());
-    // FaceRecLoginManager.signIn();
-    // console.log(FaceRecLoginManager.isSignedin());
-
     // localStorage.clear();
     let loginManagerData = localStorage.getItem("FaceRecLoginManager");
-    // console.log('loginManagerData', loginManagerData);
     if ((loginManagerData !== null) && (typeof loginManagerData !== 'undefined')) {
       if (loginManagerData.signedIn) FaceRecLoginManager.signIn();
       else FaceRecLoginManager.signIn();
       localStorage.setItem("FaceRecLoginManager", JSON.stringify(FaceRecLoginManager));
     }
 
-
     let data = localStorage.getItem(this.localStorageStateKey);
-    // console.log('stateData', data);
     if ((data !== null) && (typeof data !== 'undefined')) {
       let locStor = JSON.parse(data);
       if ((locStor.user !== null) && (typeof locStor.user !== 'undefined')) {
@@ -304,7 +297,6 @@ class App extends Component {
   //     </div>
   //   );
   // }
-
 
   // RENDER IN DEVELOPMENT, USES ROUTER
   render() {
