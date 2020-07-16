@@ -17,11 +17,11 @@
 
 .spinner {
   height: 2em;
-  -webkit-animation: spinner 600ms linear infinite;
-  -moz-animation: spinner 600ms linear infinite;
-  -ms-animation: spinner 600ms linear infinite;
-  -o-animation: spinner 600ms linear infinite;
-  animation: spinner 600ms linear infinite;
+  -webkit-animation: spinner 1000ms linear infinite;
+  -moz-animation: spinner 1000ms linear infinite;
+  -ms-animation: spinner 1000ms linear infinite;
+  -o-animation: spinner 1000ms linear infinite;
+  animation: spinner 1000ms linear infinite;
 }
 
 .bigger {

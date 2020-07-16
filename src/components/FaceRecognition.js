@@ -19,7 +19,7 @@ class FaceRecognition extends React.Component {
 
   render() {
     return (
-      <div className='center' style={{ marginTop: '50px', marginBottom: '50px' }}>
+      <div className='center' style={{ marginTop: '50px', marginBottom: '100px' }}>
         <div className='imageWrap absolute mt2 mb2'>
           <img id='image' src={this.props.imageUrl} alt={``} style={{width: '500px', height: 'auto'}} />
           { this.state.boxesOrSpinner }
